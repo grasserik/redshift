@@ -72,7 +72,7 @@ open_hooks_dir(char *hp)
 
 /* Run hooks with a signal that the period changed. */
 void
-hooks_signal_period_change(period_t prev_period, period_t period)
+hooks_signal_period_change(period_t prev_period, period_t period, double alpha)
 {
 	char hooksdir_path[MAX_HOOK_PATH];
 	DIR *hooks_dir = open_hooks_dir(hooksdir_path);
@@ -98,11 +98,12 @@ hooks_signal_period_change(period_t prev_period, period_t period)
 			continue;
 		} else if (pid == 0) { /* Child */
 			close(STDOUT_FILENO);
-
+			char alpha_str[20];
+			sprintf(alpha_str, "%f", alpha);
 			int r = execl(hook_path, hook_name,
 				      "period-changed",
 				      period_names[prev_period],
-				      period_names[period], NULL);
+				      period_names[period], alpha_str, NULL);
 			if (r < 0 && errno != EACCES) perror("execl");
 
 			/* Only reached on error */

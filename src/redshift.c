@@ -890,10 +890,10 @@ run_continual_mode(const location_t *loc,
 							elevation);
 			print_period(period, transition);
 		}
-
+		
 		/* Activate hooks if period changed */
-		if (period != prev_period) {
-			hooks_signal_period_change(prev_period, period);
+		if (period != prev_period || period == PERIOD_TRANSITION) {
+			hooks_signal_period_change(prev_period, period, adjustment_alpha);
 		}
 
 		/* Ongoing short transition */

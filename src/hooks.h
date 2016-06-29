@@ -23,7 +23,7 @@
 #include "redshift.h"
 
 void hooks_signal_period_change(period_t prev_period,
-				period_t period);
+				period_t period, double alpha);
 
 
 #endif /* ! REDSHIFT_HOOKS_H */
